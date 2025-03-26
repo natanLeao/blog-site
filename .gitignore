@@ -1,0 +1,35 @@
+# Node.js (backend)
+node_modules/
+backend/node_modules/
+backend/package-lock.json
+
+# Logs e arquivos temporários
+logs/
+*.log
+*.tmp
+
+# Configurações de ambiente
+.env
+backend/.env
+
+# Banco de dados MySQL (Docker)
+mysql_data/
+
+# Docker
+docker-compose.override.yml
+docker/backend/node_modules/
+docker/frontend/node_modules/
+
+# Nginx (cache e logs)
+frontend/nginx.conf
+frontend/cache/
+frontend/logs/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Arquivos do sistema
+Thumbs.db

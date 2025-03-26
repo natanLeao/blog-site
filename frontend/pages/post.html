@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Postagem</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Meu Blog</h1>
+        <nav>
+            <a href="../index.html">Início</a>
+            <button id="logout">Logout</button>
+        </nav>
+    </header>
+
+    <main>
+        <h2 id="pageTitle">Criar Postagem</h2>
+        <form id="postForm">
+            <input type="text" id="title" placeholder="Título" required>
+            <textarea id="content" placeholder="Conteúdo da postagem" required></textarea>
+            <button type="submit">Salvar</button>
+        </form>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/post.js"></script>
+</body>
+</html>
