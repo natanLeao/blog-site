@@ -1,16 +1,25 @@
 const db = require('../config/db');
-const bcrypt = require('bcrypt');
+const User = require("../models/userModel");
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { username, email, password } = req.body;
 
-    db.query('INSERT INTO users (username, password) VALUES (?, ?)', 
-    [username, hashedPassword], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'Usuário cadastrado' });
-    });
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await User.create({
+            username,
+            email,
+            password: hashedPassword
+        });
+
+        res.status(201).json({ message: "Usuário cadastrado com sucesso!", user: newUser });
+    } catch (error) {
+        console.error("Erro no cadastro:", error);
+        res.status(500).json({ error: "Erro ao registrar usuário" });
+    }
 };
 
 exports.login = (req, res) => {
