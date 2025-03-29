@@ -1,38 +1,38 @@
-const db = require('../config/db');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
-    const { username, email, password } = req.body;
-
     try {
+        console.log("Recebendo dados do usuário:", req.body); // Debug
+
+        const { username, email, password } = req.body;
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.create(username, email, hashedPassword);
 
-        const newUser = await User.create({
-            username,
-            email,
-            password: hashedPassword
-        });
-
-        res.status(201).json({ message: "Usuário cadastrado com sucesso!", user: newUser });
+        res.status(201).json({ message: "Usuário registrado com sucesso!" });
     } catch (error) {
-        console.error("Erro no cadastro:", error);
-        res.status(500).json({ error: "Erro ao registrar usuário" });
+        console.error("Erro ao registrar usuário:", error);
+        res.status(500).json({ message: "Erro ao registrar usuário", error: error.message });
     }
 };
 
-exports.login = (req, res) => {
-    const { username, password } = req.body;
+exports.login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findByEmail(email);
 
-    db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
-        if (err || results.length === 0) return res.status(401).json({ error: 'Usuário inválido' });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ message: "Credenciais inválidas!" });
+        }
 
-        const user = results[0];
-        const isValid = await bcrypt.compare(password, user.password);
-        if (!isValid) return res.status(401).json({ error: 'Senha inválida' });
-
-        const token = jwt.sign({ id: user.id }, 'secret', { expiresIn: '1h' });
-        res.json({ token });
-    });
+        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        res.json({ message: "Login bem-sucedido!", token });
+    } catch (err) {
+        res.status(500).json({ message: "Erro ao fazer login", error: err.message });
+    }
 };

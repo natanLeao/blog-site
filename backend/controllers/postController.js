@@ -1,41 +1,49 @@
-const db = require('../config/db');
+const Post = require("../models/postModel");
 
-exports.createPost = (req, res) => {
-    const { title, content } = req.body;
-    db.query('INSERT INTO posts (title, content, author_id) VALUES (?, ?, ?)',
-    [title, content, req.user.id], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'Postagem criada' });
-    });
+exports.createPost = async (req, res) => {
+    try {
+        const { title, content } = req.body;
+        await Post.create({ title, content, userId: req.user.id });
+        res.status(201).json({ message: "Postagem criada!" });
+    } catch (err) {
+        res.status(500).json({ message: "Erro ao criar postagem", error: err.message });
+    }
 };
 
-exports.getPosts = (req, res) => {
-    db.query('SELECT * FROM posts ORDER BY created_at DESC', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
+exports.getAllPosts = async (req, res) => {
+    try {
+        const order = req.query.order === "asc" ? "ASC" : "DESC";
+        const posts = await Post.findAll(order);
+        res.json(posts);
+    } catch (err) {
+        res.status(500).json({ message: "Erro ao obter postagens", error: err.message });
+    }
 };
 
-exports.getPost = (req, res) => {
-    db.query('SELECT * FROM posts WHERE id = ?', [req.params.id], (err, results) => {
-        if (err || results.length === 0) return res.status(404).json({ error: 'Postagem não encontrada' });
-        res.json(results[0]);
-    });
+exports.getPostById = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(404).json({ message: "Postagem não encontrada!" });
+        res.json(post);
+    } catch (err) {
+        res.status(500).json({ message: "Erro ao buscar postagem", error: err.message });
+    }
 };
 
-exports.updatePost = (req, res) => {
-    const { title, content } = req.body;
-    db.query('UPDATE posts SET title = ?, content = ? WHERE id = ? AND author_id = ?',
-    [title, content, req.params.id, req.user.id], (err, result) => {
-        if (err || result.affectedRows === 0) return res.status(403).json({ error: 'Não autorizado' });
-        res.json({ message: 'Postagem atualizada' });
-    });
+exports.updatePost = async (req, res) => {
+    try {
+        await Post.update(req.params.id, req.body.title, req.body.content);
+        res.json({ message: "Postagem atualizada!" });
+    } catch (err) {
+        res.status(500).json({ message: "Erro ao atualizar postagem", error: err.message });
+    }
 };
 
-exports.deletePost = (req, res) => {
-    db.query('DELETE FROM posts WHERE id = ? AND author_id = ?', 
-    [req.params.id, req.user.id], (err, result) => {
-        if (err || result.affectedRows === 0) return res.status(403).json({ error: 'Não autorizado' });
-        res.json({ message: 'Postagem deletada' });
-    });
+exports.deletePost = async (req, res) => {
+    try {
+        await Post.delete(req.params.id);
+        res.json({ message: "Postagem removida!" });
+    } catch (err) {
+        res.status(500).json({ message: "Erro ao deletar postagem", error: err.message });
+    }
 };

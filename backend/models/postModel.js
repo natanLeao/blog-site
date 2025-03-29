@@ -1,28 +1,33 @@
-const db = require('../config/db');
+const pool = require("../config/db");
 
-class Post {
-    static create(title, content, authorId, callback) {
-        db.query('INSERT INTO posts (title, content, author_id) VALUES (?, ?, ?)', 
-        [title, content, authorId], callback);
-    }
+exports.create = async (post) => {
+    const { title, content, userId } = post;
+    const [result] = await pool.execute(
+        "INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)",
+        [title, content, userId]
+    );
+    return result;
+};
 
-    static getAll(callback) {
-        db.query('SELECT * FROM posts ORDER BY created_at DESC', callback);
-    }
+exports.findAll = async (order = "DESC") => {
+    const [rows] = await pool.execute(`SELECT * FROM posts ORDER BY created_at ${order}`);
+    return rows;
+};
 
-    static getById(postId, callback) {
-        db.query('SELECT * FROM posts WHERE id = ?', [postId], callback);
-    }
+exports.findById = async (id) => {
+    const [rows] = await pool.execute("SELECT * FROM posts WHERE id = ?", [id]);
+    return rows[0];
+};
 
-    static update(postId, authorId, title, content, callback) {
-        db.query('UPDATE posts SET title = ?, content = ? WHERE id = ? AND author_id = ?', 
-        [title, content, postId, authorId], callback);
-    }
+exports.update = async (id, title, content) => {
+    const [result] = await pool.execute(
+        "UPDATE posts SET title = ?, content = ? WHERE id = ?",
+        [title, content, id]
+    );
+    return result;
+};
 
-    static delete(postId, authorId, callback) {
-        db.query('DELETE FROM posts WHERE id = ? AND author_id = ?', 
-        [postId, authorId], callback);
-    }
-}
-
-module.exports = Post;
+exports.delete = async (id) => {
+    const [result] = await pool.execute("DELETE FROM posts WHERE id = ?", [id]);
+    return result;
+};

@@ -1,14 +1,15 @@
-const db = require('../config/db');
+const pool = require("../config/db");
 
-class User {
-    static create(username, password, callback) {
-        db.query('INSERT INTO users (username, password) VALUES (?, ?)', 
-        [username, password], callback);
-    }
+exports.create = async (user) => {
+    const { username, email, password } = user;
+    const [result] = await pool.execute(
+        "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+        [username, email, password]
+    );
+    return result;
+};
 
-    static findByUsername(username, callback) {
-        db.query('SELECT * FROM users WHERE username = ?', [username], callback);
-    }
-}
-
-module.exports = User;
+exports.findByEmail = async (email) => {
+    const [rows] = await pool.execute("SELECT * FROM users WHERE email = ?", [email]);
+    return rows[0];
+};
