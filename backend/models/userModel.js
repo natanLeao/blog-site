@@ -1,15 +1,10 @@
-const pool = require("../config/db");
+const db = require('../config/db');
 
-exports.create = async (user) => {
-    const { username, email, password } = user;
-    const [result] = await pool.execute(
-        "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-        [username, email, password]
-    );
-    return result;
+exports.create = async (username, password) => {
+    await db.execute('INSERT INTO users (username, password) VALUES (?, ?)', [username, password]);
 };
 
-exports.findByEmail = async (email) => {
-    const [rows] = await pool.execute("SELECT * FROM users WHERE email = ?", [email]);
+exports.findByUsername = async (username) => {
+    const [rows] = await db.execute('SELECT * FROM users WHERE username = ?', [username]);
     return rows[0];
 };
