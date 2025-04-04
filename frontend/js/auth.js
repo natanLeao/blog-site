@@ -1,42 +1,92 @@
-document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+const apiUrl = "http://localhost:3000";
 
-    const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-    });
+// Atualiza visibilidade dos links com base na autenticação
+function atualizarLinks() {
+    const token = localStorage.getItem("token");
+    const loginLink = document.getElementById("login-link");
+    const registerLink = document.getElementById("register-link");
+    const logoutBtn = document.getElementById("logout");
 
-    const data = await response.json();
-    if (response.ok) {
-        localStorage.setItem("token", data.token);
-        window.location.href = "../index.html";
+    if (token) {
+        if (loginLink) loginLink.style.display = "none";
+        if (registerLink) registerLink.style.display = "none";
+        if (logoutBtn) logoutBtn.style.display = "inline-block";
     } else {
-        alert("Erro ao fazer login!");
+        if (loginLink) loginLink.style.display = "inline-block";
+        if (registerLink) registerLink.style.display = "inline-block";
+        if (logoutBtn) logoutBtn.style.display = "none";
     }
-});
+}
 
-document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+// Login
+async function login() {
+    const username = document.getElementById("login-username").value;
+    const password = document.getElementById("login-password").value;
 
-    const response = await fetch("http://localhost:3000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-    });
+    try {
+        const response = await fetch(`${apiUrl}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
 
-    if (response.ok) {
-        window.location.href = "login.html";
-    } else {
-        alert("Erro ao cadastrar!");
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem("token", data.token);
+            alert("Login realizado com sucesso!");
+            window.location.href = "../index.html";
+        } else {
+            alert(data.message || "Erro ao fazer login.");
+        }
+    } catch (error) {
+        alert("Erro de conexão.");
+        console.error(error);
     }
-});
+}
 
-document.getElementById("logout")?.addEventListener("click", () => {
+// Cadastro
+async function register() {
+    const username = document.getElementById("register-username").value;
+    const password = document.getElementById("register-password").value;
+
+    try {
+        const response = await fetch(`${apiUrl}/auth/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("Cadastro realizado com sucesso!");
+            window.location.href = "../pages/login.html";
+        } else {
+            alert(data.message || "Erro ao cadastrar.");
+        }
+    } catch (error) {
+        alert("Erro de conexão.");
+        console.error(error);
+    }
+}
+
+// Logout
+function logout() {
     localStorage.removeItem("token");
-    window.location.href = "pages/login.html";
+    alert("Sessão encerrada.");
+    window.location.href = "../index.html";
+}
+
+// Adiciona event listeners se os elementos existirem
+document.addEventListener("DOMContentLoaded", () => {
+    atualizarLinks();
+    
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
+    const logoutBtn = document.getElementById("logout");
+
+    if (loginForm) loginForm.addEventListener("submit", (e) => { e.preventDefault(); login(); });
+    if (registerForm) registerForm.addEventListener("submit", (e) => { e.preventDefault(); register(); });
+    if (logoutBtn) logoutBtn.addEventListener("click", logout);
 });

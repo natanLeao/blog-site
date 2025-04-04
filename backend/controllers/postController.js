@@ -10,6 +10,27 @@ exports.createPost = async (req, res) => {
     }
 };
 
+exports.editPost = async (req, res) => {
+    try {
+        const { title, content } = req.body;
+        const postId = req.params.id;
+
+        const updatedPost = await Post.update(postId, title, content, req.session.user.id);
+        res.json({ message: "Postagem atualizada com sucesso!", post: updatedPost });
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao editar postagem", details: error.message });
+    }
+};
+
+exports.getPosts = async (req, res) => {
+    try {
+        const posts = await Post.getAll();
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao buscar postagens", details: error.message });
+    }
+};
+
 exports.getAllPosts = async (req, res) => {
     try {
         const order = req.query.order === "asc" ? "ASC" : "DESC";

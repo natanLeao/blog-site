@@ -1,20 +1,38 @@
-async function carregarPosts() {
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:3000/posts", {
-        headers: { "Authorization": token },
+const apiUrl = "http://localhost:3000";
+const token = localStorage.getItem("token");
+
+async function loadPosts() {
+    const response = await fetch(`${apiUrl}/posts`, {
+        headers: { "Authorization": `Bearer ${token}` }
     });
 
     const posts = await response.json();
-    const postsContainer = document.getElementById("posts");
-    postsContainer.innerHTML = posts.map(post => `
-        <div class="post">
-            <h3>${post.title}</h3>
-            <p>${post.content}</p>
-        </div>
-    `).join("");
+    const postList = document.getElementById("postList");
+    postList.innerHTML = "";
+
+    posts.forEach(post => {
+        const li = document.createElement("li");
+        li.textContent = post.title;
+        postList.appendChild(li);
+    });
 }
 
-if (localStorage.getItem("token")) {
-    document.getElementById("logout").style.display = "block";
-    carregarPosts();
+async function savePost() {
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+
+    await fetch(`${apiUrl}/posts`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, content })
+    });
+
+    window.location.href = "home.html";
+}
+
+if (window.location.pathname.includes("home.html")) {
+    loadPosts();
 }

@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <h2>Cadastro</h2>
-    <form id="registerForm">
-        <input type="text" id="username" placeholder="Usuário" required>
-        <input type="password" id="password" placeholder="Senha" required>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <p>Já tem conta? <a href="login.html">Faça login</a></p>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <form id="register-form">
+            <label for="register-username">Usuário:</label>
+            <input type="text" id="register-username" name="username" required>
+
+            <label for="register-password">Senha:</label>
+            <input type="password" id="register-password" name="password" required>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+    </div>
     <script src="../js/auth.js"></script>
 </body>
 </html>

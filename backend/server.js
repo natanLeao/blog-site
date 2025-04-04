@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const userController = require('./controllers/authController');
 const postController = require('./controllers/postController');
+const authRoutes = require("./routes/authRoutes");
+const postRoutes = require("./routes/postRoutes");
+
 const app = express();
 
 app.use(bodyParser.json());
