@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
-    secret: process.env.JTW_SECRET || 'teste123',
+    secret: process.env.JTW_SECRET || '123',
     resave: false,
     saveUninitialized: true
 }));

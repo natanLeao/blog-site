@@ -50,15 +50,14 @@ function displayUserPosts(posts) {
 
 // Criar nova postagem
 document.getElementById("new-post").addEventListener("click", () => {
-    window.location.href = "../pages/create-post.html";
+    window.location.href = "../pages/post.html";
 });
 
-// Editar postagem
+
 function editPost(postId) {
-    window.location.href = `../pages/edit-post.html?id=${postId}`;
+    window.location.href = `../pages/post.html?id=${postId}`;
 }
 
-// Deletar postagem
 async function deletePost(postId) {
     const token = localStorage.getItem("token");
 

@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:8.0
     container_name: mysql_blog
     restart: always
     environment:
@@ -11,6 +11,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
+      - ./backend/config/db.sql:/docker-entrypoint-initdb.d/db.sql
       - mysql_data:/var/lib/mysql
 
   backend:

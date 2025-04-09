@@ -1,5 +1,5 @@
 # Usando servidor Nginx para servir os arquivos estáticos
-FROM nginx:latest
+FROM nginx:alpine
 
 # Copiar arquivos do frontend para o diretório do Nginx
 COPY . /usr/share/nginx/html

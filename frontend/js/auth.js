@@ -1,6 +1,5 @@
-const apiUrl = "http://localhost:3000";
+const apiUrl = "http://blog_backend:3000";
 
-// Atualiza visibilidade dos links com base na autenticação
 function atualizarLinks() {
     const token = localStorage.getItem("token");
     const loginLink = document.getElementById("login-link");
@@ -18,7 +17,6 @@ function atualizarLinks() {
     }
 }
 
-// Login
 async function login() {
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
@@ -45,7 +43,6 @@ async function login() {
     }
 }
 
-// Cadastro
 async function register() {
     const username = document.getElementById("register-username").value;
     const password = document.getElementById("register-password").value;
@@ -71,14 +68,12 @@ async function register() {
     }
 }
 
-// Logout
 function logout() {
     localStorage.removeItem("token");
     alert("Sessão encerrada.");
     window.location.href = "../index.html";
 }
 
-// Adiciona event listeners se os elementos existirem
 document.addEventListener("DOMContentLoaded", () => {
     atualizarLinks();
     
