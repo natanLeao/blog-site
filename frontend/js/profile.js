@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:3000";
+const apiUrl = "http://blog_backend:3000";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("token");

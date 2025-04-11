@@ -13,6 +13,8 @@ services:
     volumes:
       - ./backend/config/db.sql:/docker-entrypoint-initdb.d/db.sql
       - mysql_data:/var/lib/mysql
+    networks:
+      - blog_network
 
   backend:
     build: ./backend
@@ -31,6 +33,8 @@ services:
       - ./backend:/app
     working_dir: /app
     command: ["node", "server.js"]
+    networks:
+      - blog_network
 
   frontend:
     build: ./frontend
@@ -42,6 +46,12 @@ services:
       - "8080:80"
     volumes:
       - ./frontend:/usr/share/nginx/html
+    networks:
+      - blog_network  
+
+networks:
+  blog_network:
+    driver: bridge
 
 volumes:
   mysql_data:

@@ -29,7 +29,7 @@ app.get('/posts', userController.authenticate, postController.getPosts);
 app.get('/posts/:id', userController.authenticate, postController.getPostById);
 app.delete('/posts/:id', userController.authenticate, postController.deletePost);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
