@@ -10,7 +10,7 @@ Abra o terminal e execute o seguinte comando para clonar o projeto:
 
 ```bash
  
-git clone https://github.com/natanLeao/agenda-telefonica.git
+git clone https://github.com/natanLeao/blog-site.git
  
 ```
 
@@ -19,7 +19,7 @@ git clone https://github.com/natanLeao/agenda-telefonica.git
 
 ```bash
  
-cd agenda-telefonica
+cd blog-site
  
 ```
 
