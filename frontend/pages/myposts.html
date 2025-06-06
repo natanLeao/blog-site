@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Postagens</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <h1>Minhas Postagens</h1>
+    <div id="posts"></div>
+    <a href="index.html">Home</a> | 
+    <a href="create.html">Criar Nova</a> | 
+    <a href="#" onclick="removerToken();window.location.href='login.html'">Sair</a>
+
+    <script src="../js/script.js"></script>
+    <script>
+        fetch(`${API_URL}/posts?mine=true`, { headers: headers() })
+            .then(res => res.json())
+            .then(posts => {
+                const div = document.getElementById('posts');
+                posts.forEach(post => {
+                    const el = document.createElement('div');
+                    el.className = 'post';
+                    el.innerHTML = `<h2>${post.titulo}</h2>
+                    <p>${post.conteudo}</p>
+                    <a href="post.html?id=${post.id}">Ver detalhes</a> | 
+                    <a href="edit.html?id=${post.id}">Editar</a> | 
+                    <a href="#" onclick="deletar(${post.id})">Deletar</a>`;
+                    div.appendChild(el);
+                });
+            });
+
+        function deletar(id) {
+            if (confirm('Deseja realmente deletar?')) {
+                fetch(`${API_URL}/posts/${id}`, {
+                    method: 'DELETE',
+                    headers: headers()
+                }).then(() => window.location.reload());
+            }
+        }
+    </script>
+</body>
+</html>

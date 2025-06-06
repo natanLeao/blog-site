@@ -1,0 +1,38 @@
+# Node.js
+backend/node_modules/
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+backend/package-lock.json
+
+# Variáveis de ambiente
+backend/.env
+
+# Banco de Dados
+database/data/
+*.sql
+
+# Docker
+*.log
+**/tmp
+**/temp
+.dockerignore
+
+# VSCode
+.vscode/
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Logs gerais
+logs/
+*.log
+
+# Pastas de build (caso algum frontend use futuramente)
+dist/
+build/
+
+# Cache
+npm-cache/
+.cache/

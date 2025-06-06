@@ -1,0 +1,39 @@
+
+version: '3.8'
+
+services:
+  db_blog:
+    build: ./database
+    container_name: db_blog
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend_blog:
+    build: ./backend
+    container_name: backend_blog
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db_blog
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=blog
+      - JWT_SECRET=meusegredo
+    depends_on:
+      - db_blog
+
+  frontend_blog:
+    build: ./frontend
+    container_name: frontend_blog
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend_blog
+
+volumes:
+  db_data:

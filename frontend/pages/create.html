@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Postagem</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <h1>Criar Postagem</h1>
+    <form id="createForm">
+        <input type="text" id="titulo" placeholder="Título" required><br>
+        <textarea id="conteudo" placeholder="Conteúdo" required></textarea><br>
+        <button type="submit">Criar</button>
+    </form>
+    <a href="index.html">Home</a>
+
+    <script src="../js/script.js"></script>
+    <script>
+        document.getElementById('createForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const titulo = document.getElementById('titulo').value;
+            const conteudo = document.getElementById('conteudo').value;
+
+            fetch(`${API_URL}/posts`, {
+                method: 'POST',
+                headers: headers(),
+                body: JSON.stringify({ titulo, conteudo })
+            })
+            .then(() => {
+                alert('Postagem criada!');
+                window.location.href = 'myposts.html';
+            });
+        });
+    </script>
+</body>
+</html>

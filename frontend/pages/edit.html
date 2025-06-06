@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Postagem</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <h1>Editar Postagem</h1>
+    <form id="editForm">
+        <input type="text" id="titulo" placeholder="Título" required><br>
+        <textarea id="conteudo" placeholder="Conteúdo" required></textarea><br>
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="index.html">Home</a>
+
+    <script src="../js/script.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+
+        fetch(`${API_URL}/posts/${id}`, { headers: headers() })
+            .then(res => res.json())
+            .then(post => {
+                document.getElementById('titulo').value = post.titulo;
+                document.getElementById('conteudo').value = post.conteudo;
+            });
+
+        document.getElementById('editForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const titulo = document.getElementById('titulo').value;
+            const conteudo = document.getElementById('conteudo').value;
+
+            fetch(`${API_URL}/posts/${id}`, {
+                method: 'PUT',
+                headers: headers(),
+                body: JSON.stringify({ titulo, conteudo })
+            })
+            .then(() => {
+                alert('Postagem atualizada!');
+                window.location.href = 'myposts.html';
+            });
+        });
+    </script>
+</body>
+</html>
