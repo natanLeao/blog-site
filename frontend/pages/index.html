@@ -2,33 +2,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Blog - Home</title>
-    <link rel="stylesheet" href="../css/styles.css">
+  <meta charset="UTF-8">
+  <title>Blog - Home</title>
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
+  <div class="container">
     <h1>Blog - Home</h1>
+    <div class="nav" id="nav"></div>
     <div id="posts"></div>
-    <a href="login.html">Login</a> | 
-    <a href="register.html">Cadastrar</a> | 
-    <a href="myposts.html">Minhas Postagens</a> | 
-    <a href="create.html">Criar Postagem</a>
+  </div>
 
-    <script src="../js/script.js"></script>
-    <script>
-        fetch(`${API_URL}/posts`, { headers: headers() })
-            .then(res => res.json())
-            .then(posts => {
-                const div = document.getElementById('posts');
-                posts.forEach(post => {
-                    const el = document.createElement('div');
-                    el.className = 'post';
-                    el.innerHTML = `<h2>${post.titulo}</h2>
-                    <p>${post.conteudo}</p>
-                    <a href="post.html?id=${post.id}">Ver detalhes</a>`;
-                    div.appendChild(el);
-                });
-            });
-    </script>
+  <script src="../js/script.js"></script>
+  <script>
+    if (!obterToken()) {
+      window.location.href = 'login.html';
+    }
+
+    const nav = document.getElementById('nav');
+    if (obterToken()) {
+      nav.innerHTML = `
+        <a href="myposts.html">Minhas Postagens</a>
+        <a href="create.html">Criar Postagem</a>
+        <a href="#" onclick="removerToken(); window.location.href='index.html'">Sair</a>
+      `;
+    } else {
+      nav.innerHTML = `
+        <a href="login.html">Login</a>
+        <a href="register.html">Cadastrar</a>
+      `;
+    }
+
+    fetch(`${API_URL}/posts`, { headers: headers() })
+      .then(res => res.json())
+      .then(posts => {
+        const div = document.getElementById('posts');
+        posts.forEach(post => {
+          const el = document.createElement('div');
+          el.className = 'post';
+          el.innerHTML = `<h2>${post.titulo}</h2>
+                          <p>${post.conteudo}</p>
+                          <a href="post.html?id=${post.id}">Ver detalhes</a>`;
+          div.appendChild(el);
+        });
+      });
+  </script>
 </body>
 </html>

@@ -2,36 +2,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Criar Postagem</title>
-    <link rel="stylesheet" href="../css/styles.css">
+  <meta charset="UTF-8">
+  <title>Criar Postagem</title>
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
+  <div class="container">
     <h1>Criar Postagem</h1>
+    <div class="nav" id="nav"></div>
     <form id="createForm">
-        <input type="text" id="titulo" placeholder="Título" required><br>
-        <textarea id="conteudo" placeholder="Conteúdo" required></textarea><br>
-        <button type="submit">Criar</button>
+      <input type="text" id="titulo" placeholder="Título" required><br>
+      <textarea id="conteudo" placeholder="Conteúdo" required></textarea><br>
+      <button type="submit">Criar</button>
     </form>
-    <a href="index.html">Home</a>
+  </div>
 
-    <script src="../js/script.js"></script>
-    <script>
-        document.getElementById('createForm').addEventListener('submit', e => {
-            e.preventDefault();
-            const titulo = document.getElementById('titulo').value;
-            const conteudo = document.getElementById('conteudo').value;
+  <script src="../js/script.js"></script>
+  <script>
+    const nav = document.getElementById('nav');
+    if (obterToken()) {
+      nav.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="myposts.html">Minhas Postagens</a>
+        <a href="#" onclick="removerToken(); window.location.href='index.html'">Sair</a>
+      `;
+    }
 
-            fetch(`${API_URL}/posts`, {
-                method: 'POST',
-                headers: headers(),
-                body: JSON.stringify({ titulo, conteudo })
-            })
-            .then(() => {
-                alert('Postagem criada!');
-                window.location.href = 'myposts.html';
-            });
-        });
-    </script>
+    document.getElementById('createForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const titulo = document.getElementById('titulo').value;
+      const conteudo = document.getElementById('conteudo').value;
+
+      fetch(`${API_URL}/posts`, {
+        method: 'POST',
+        headers: headers(),
+        body: JSON.stringify({ titulo, conteudo })
+      }).then(() => {
+        alert('Postagem criada!');
+        window.location.href = 'myposts.html';
+      });
+    });
+  </script>
 </body>
 </html>

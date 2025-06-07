@@ -2,39 +2,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastrar</title>
-    <link rel="stylesheet" href="../css/styles.css">
+  <meta charset="UTF-8">
+  <title>Cadastrar</title>
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
+  <div class="container">
     <h1>Cadastrar Usuário</h1>
     <form id="registerForm">
-        <input type="text" id="nome" placeholder="Nome" required><br>
-        <input type="email" id="email" placeholder="Email" required><br>
-        <input type="password" id="senha" placeholder="Senha" required><br>
-        <button type="submit">Cadastrar</button>
+      <input type="text" id="nome" placeholder="Nome" required><br>
+      <input type="email" id="email" placeholder="Email" required><br>
+      <input type="password" id="senha" placeholder="Senha" required><br>
+      <button type="submit">Cadastrar</button>
     </form>
-    <a href="login.html">Já tenho uma conta</a>
+    <div class="nav" id="nav"></div>
+  </div>
 
-    <script src="../js/script.js"></script>
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', e => {
-            e.preventDefault();
-            const nome = document.getElementById('nome').value;
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
+  <script src="../js/script.js"></script>
+  <script>
+    const nav = document.getElementById('nav');
+    if (obterToken()) {
+      nav.innerHTML = `
+        <a href="myposts.html">Minhas Postagens</a>
+        <a href="create.html">Criar Postagem</a>
+        <a href="#" onclick="removerToken(); window.location.href='index.html'">Sair</a>
+      `;
+    } else {
+      nav.innerHTML = `<a href="login.html">Já tenho uma conta</a>`;
+    }
 
-            fetch(`${API_URL}/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, email, senha })
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert('Cadastrado com sucesso!');
-                window.location.href = 'login.html';
-            });
-        });
-    </script>
+    document.getElementById('registerForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      fetch(`${API_URL}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, senha })
+      })
+      .then(() => {
+        alert('Cadastrado com sucesso!');
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
 </body>
 </html>

@@ -2,26 +2,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Detalhes da Postagem</title>
-    <link rel="stylesheet" href="../css/styles.css">
+  <meta charset="UTF-8">
+  <title>Detalhes da Postagem</title>
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
+  <div class="container">
     <h1>Detalhes da Postagem</h1>
+    <div class="nav" id="nav"></div>
     <div id="post"></div>
-    <a href="index.html">Home</a>
+  </div>
 
-    <script src="../js/script.js"></script>
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
+  <script src="../js/script.js"></script>
+  <script>
+    const nav = document.getElementById('nav');
+    if (obterToken()) {
+      nav.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="myposts.html">Minhas Postagens</a>
+        <a href="create.html">Criar Postagem</a>
+        <a href="#" onclick="removerToken(); window.location.href='index.html'">Sair</a>
+      `;
+    } else {
+      nav.innerHTML = `<a href="index.html">Voltar</a>`;
+    }
 
-        fetch(`${API_URL}/posts/${id}`, { headers: headers() })
-            .then(res => res.json())
-            .then(post => {
-                const div = document.getElementById('post');
-                div.innerHTML = `<h2>${post.titulo}</h2><p>${post.conteudo}</p>`;
-            });
-    </script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    fetch(`${API_URL}/posts/${id}`, { headers: headers() })
+      .then(res => res.json())
+      .then(post => {
+        const div = document.getElementById('post');
+        div.innerHTML = `<h2>${post.titulo}</h2><p>${post.conteudo}</p>`;
+      });
+  </script>
 </body>
 </html>
