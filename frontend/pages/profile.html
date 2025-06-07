@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postagens</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>Postagens</h1>
+        <nav>
+            <a href="home.html">Início</a>
+            <a href="profile.html">Meu Perfil</a>
+            <a href="../index.html">Início</a>
+            <button id="logout">Sair</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Perfil do Usuário</h2>
+        <p><strong>Usuário:</strong> <span id="username"></span></p>
+        
+        <button onclick="window.location.href='../index.html'">Voltar para o Início</button>
+    </div>
+
+    <script src="../js/posts.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = localStorage.getItem("username");
+            if (username) {
+                document.getElementById("username").textContent = username;
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+
+    <main>
+        <h2>Minhas Postagens</h2>
+        <div id="user-posts"></div>
+        <button id="new-post">Criar Nova Postagem</button>
+    </main>
+
+    <script src="../js/profile.js"></script>
+</body>
+</html>
