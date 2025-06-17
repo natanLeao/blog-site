@@ -7,9 +7,6 @@ backend/package-lock.json
 
 backend/.env
 
-database/data/
-*.sql
-
 *.log
 **/tmp
 **/temp
