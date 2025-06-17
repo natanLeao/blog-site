@@ -36,7 +36,7 @@ Sistema de um **Blog Pessoal** desenvolvido com:
 1️⃣ Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/blog-pessoal.git
+git clone https://github.com/natanLeao/blog-pessoal.git
 cd blog-pessoal
 ```
 
