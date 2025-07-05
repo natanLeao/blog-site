@@ -7,7 +7,7 @@ body {
 
 .container {
     width: 90%;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 40px auto;
     background-color: #fff;
     padding: 30px;
@@ -65,11 +65,45 @@ button:hover {
 }
 
 .post {
-    background-color: #fefefe;
     padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
+    border-radius: 6px;
+    border: 1px solid #f1e189;
+    width: 250px;
+    height: 250px;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+    margin: 15px;
+    display: inline-block;
+    vertical-align: top;
+    transform: rotate(-1deg);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff8b3;
+}
+
+.post:hover {
+    transform: rotate(0deg) scale(1.02);
+    box-shadow: 8px 8px 15px rgba(0,0,0,0.15);
+}
+
+.post::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    width: 50px;
+    height: 20px;
+    background: #ffd700;
+    border-radius: 10px;
+    transform: rotate(-5deg);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.post-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
 .nav {
@@ -92,7 +126,6 @@ button:hover {
     margin-bottom: 15px;
 }
 
-/* NOVO - Estilo para links que funcionam como botões */
 .button-link {
     display: inline-block;
     background-color: #007bff;

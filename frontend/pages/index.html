@@ -10,7 +10,7 @@
   <div class="container">
     <h1>Blog - Home</h1>
     <div class="nav" id="nav"></div>
-    <div id="posts"></div>
+    <div class="post-grid" id="posts"></div>
   </div>
 
   <script src="../js/script.js"></script>
@@ -45,6 +45,7 @@
                           <a href="post.html?id=${post.id}">Ver detalhes</a>`;
           div.appendChild(el);
         });
+        aplicarEstiloPostIts();
       });
   </script>
 </body>
