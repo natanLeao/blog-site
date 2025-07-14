@@ -10,7 +10,7 @@
   <div class="container">
     <h1>Detalhes da Postagem</h1>
     <div class="nav" id="nav"></div>
-    <div class="post-grid" id="posts"></div>
+    <div id="post" class="post"></div>
   </div>
 
   <script src="../js/script.js"></script>
@@ -34,7 +34,9 @@
       .then(res => res.json())
       .then(post => {
         const div = document.getElementById('post');
-        div.innerHTML = `<h2>${post.titulo}</h2><p>${post.conteudo}</p>`;
+        div.innerHTML = `
+        <h2>${post.titulo}</h2>
+        <p>${post.conteudo}</p>`;
       });
       aplicarEstiloPostIts();
   </script>
